@@ -1,0 +1,17 @@
+{
+  "name": "lamdera-auth-example",
+  "version": "0.0.33",
+  "description": "",
+  "main": "src.Main.elm",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ville",
+  "license": "MIT",
+  "devDependencies": {
+    "elm-format": "^0.8.5"
+  },
+  "dependencies": {
+    "elm-tooling": "^1.12.0"
+  }
+}
