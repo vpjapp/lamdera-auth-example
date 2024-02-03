@@ -34,12 +34,14 @@ type FrontendMsg
     | UrlChanged Url
     | NoOpFrontendMsg
     | GoogleSigninRequested
+    | Logout
 
 
 type ToBackend
     = NoOpToBackend
     | AuthToBackend Auth.Common.ToBackend
     | GetUser
+    | LoggedOut
 
 
 type BackendMsg
@@ -51,4 +53,4 @@ type ToFrontend
     = NoOpToFrontend
     | AuthToFrontend Auth.Common.ToFrontend
     | AuthSuccess UserInfo
-    | UserInfo (Maybe UserInfo)
+    | UserInfoMsg (Maybe UserInfo)

@@ -98,6 +98,9 @@ update msg model =
             Auth.Flow.signInRequested "OAuthGoogle" model Nothing
                 |> Tuple.mapSecond (AuthToBackend >> sendToBackend)
 
+        Logout ->
+            ( { model | login = NotLogged }, Lamdera.sendToBackend LoggedOut )
+
 
 noCmd : Model -> ( Model, Cmd FrontendMsg )
 noCmd model =
@@ -116,7 +119,7 @@ updateFromBackend msg model =
         AuthSuccess userInfo ->
             ( { model | login = LoggedIn userInfo }, Nav.pushUrl model.key "/" )
 
-        UserInfo mUserinfo ->
+        UserInfoMsg mUserinfo ->
             case mUserinfo of
                 Just userInfo ->
                     ( { model | login = LoggedIn userInfo }, Cmd.none )
@@ -137,7 +140,12 @@ view model =
                 viewTokenSent
 
             LoggedIn user ->
-                div [] [ text user.email ]
+                div []
+                    [ text user.email
+                    , text " "
+                    , label []
+                        [ button [ onClick Logout ] [ text "Logout" ] ]
+                    ]
         ]
     }
 

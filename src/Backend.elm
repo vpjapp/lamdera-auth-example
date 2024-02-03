@@ -1,9 +1,9 @@
 module Backend exposing (..)
 
 import Auth
-import Auth.Common
+import Auth.Common exposing (UserInfo)
 import Auth.Flow
-import Dict
+import Dict exposing (Dict)
 import Lamdera exposing (ClientId, SessionId)
 import Types exposing (BackendModel, BackendMsg(..), ToBackend(..), ToFrontend(..))
 
@@ -55,7 +55,15 @@ updateFromFrontend sessionId clientId msg model =
             Auth.Flow.updateFromFrontend (Auth.backendConfig model) clientId sessionId authMsg model
 
         GetUser ->
-            ( model, Lamdera.sendToFrontend clientId <| UserInfo (findUser sessionId model) )
+            ( model, Lamdera.sendToFrontend clientId <| UserInfoMsg (findUser sessionId model) )
+
+        LoggedOut ->
+            ( { model | sessions = removeSession sessionId model.sessions }, Cmd.none )
+
+
+removeSession : SessionId -> Dict SessionId UserInfo -> Dict SessionId UserInfo
+removeSession sessionId sessions =
+    Dict.remove sessionId sessions
 
 
 findUser : SessionId -> Model -> Maybe Auth.Common.UserInfo
